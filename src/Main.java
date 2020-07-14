@@ -11,7 +11,7 @@ public class Main {
 
         if (args.length == 0) {
             usageInformation();
-        } else if (args[0] == "-l" || args[0] == "-a" || args[0] == "-r" || args[0] == "-c") {
+        } else if (args[0].equals("-l") || args[0].equals("-a") || args[0].equals("-r") || args[0].equals("-c")) {
             File fileTasks = new File("C:\\Users\\anmal\\greenfox\\AndyM22-todo-app\\src\\tasks.txt");
             Path pathTasks = Paths.get("C:\\Users\\anmal\\greenfox\\AndyM22-todo-app\\src\\tasks.txt");
             try {
