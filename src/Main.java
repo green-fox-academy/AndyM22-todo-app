@@ -11,28 +11,53 @@ public class Main {
 
         if (args.length == 0) {
             usageInformation();
-        } else {
+        } else if (args[0] == "-l" || args[0] == "-a" || args[0] == "-r" || args[0] == "-c") {
             File fileTasks = new File("C:\\Users\\anmal\\greenfox\\AndyM22-todo-app\\src\\tasks.txt");
+            Path pathTasks = Paths.get("C:\\Users\\anmal\\greenfox\\AndyM22-todo-app\\src\\tasks.txt");
             try {
                 if (fileTasks.canRead()) {
-                    List listTasks = new ArrayList<List>();
-                    for (String line : Files.readAllLines(Paths.get("C:\\Users\\anmal\\greenfox\\AndyM22-todo-app\\src\\tasks.txt"))) {
-                        listTasks.add(line);
+                    List listTasks = Files.readAllLines(pathTasks);
+                    ArrayList checkTasks = new ArrayList<Task>();
+                    for (int i = 0; i < listTasks.size(); i++) {
+                        checkTasks.add(new Task((String) listTasks.get(i)));
                     }
+                    boolean completed = false;
                     switch (args[0]) {
                         case "-l":
-                            for (int i = 0; i < listTasks.size(); i++) {
-                                System.out.println(i + 1 + " - " + listTasks.get(i));
-                            }
-                            if (listTasks.size() == 0){
+                            if (listTasks.size() == 0) {
                                 System.out.println("No todos for today! :)");
+                            } else if (completed == false) {
+                                for (int i = 0; i < listTasks.size(); i++) {
+                                    System.out.println(i + 1 + " - [ ] " + listTasks.get(i));
+                                }
+                            } else {
+                                for (int i = 0; i < listTasks.size(); i++) {
+                                    System.out.println(i + 1 + " - [X] " + listTasks.get(i));
+                                }
                             }
                             break;
+                        case "-a":
+                            String newTask = args[1];
+                            listTasks.add(newTask);
+                            Files.write(pathTasks, listTasks);
+                            break;
+                        case "-c":
+                            int checkTask = Integer.parseInt(args[1]);
+                            Task newCheckTask = new Task((String) listTasks.get(1));
+                            newCheckTask.complete();
+                            break;
+                        case "-r":
+                            int removeTask = Integer.parseInt(args[1]);
+                            listTasks.remove(removeTask - 1);
+                            Files.write(pathTasks, listTasks);
                     }
                 }
             } catch (Exception e) {
                 System.out.println("File doesn't exist");
             }
+        } else {
+            System.out.println("Unsupported argument");
+            usageInformation();
         }
 
     }
